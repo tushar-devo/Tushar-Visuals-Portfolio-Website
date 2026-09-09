@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Download, Briefcase, GraduationCap, Award, FileText, CheckCircle2, ArrowUpRight } from 'lucide-react';
+import { Download, Briefcase, GraduationCap, Award, FileText, CheckCircle2, ArrowUpRight, ExternalLink } from 'lucide-react';
 import { RESUME_EXPERIENCE, EDUCATION_DATA, CERTIFICATIONS_DATA, TOOLS_DATA } from '../data/portfolioData';
 import { MagneticButton } from './MagneticButton';
+import cvPdf from '../pdf/Tushar_CV.pdf';
 
 interface ResumeSectionProps {
   onOpenHireModal: () => void;
@@ -11,45 +12,22 @@ interface ResumeSectionProps {
 export const ResumeSection: React.FC<ResumeSectionProps> = ({ onOpenHireModal }) => {
   const [downloadSuccess, setDownloadSuccess] = useState(false);
 
-  const handleDownloadCV = () => {
-    // Generate an authentic printable résumé text/pdf download simulation
-    const resumeText = `
-TUSHAR VISUALS — RESUME / CURRICULUM VITAE
-Graphic Designer & WordPress Web Designer
-Website: https://tusharvisuals.com | Email: hello@tusharvisuals.com
-
-PROFESSIONAL SUMMARY
-Experienced Graphic Designer & WordPress Web Designer specializing in bespoke brand systems, high-converting WooCommerce storefronts, and performance-optimized digital experiences. Over 7 years of combined visual craftsmanship.
-
-EXPERIENCE
-${RESUME_EXPERIENCE.map(
-  (e) => `
-- ${e.role} | ${e.company} (${e.period})
-  ${e.description}
-  Achievements:
-  ${e.achievements.map((a) => `  * ${a}`).join('\n')}
-`
-).join('\n')}
-
-EDUCATION
-${EDUCATION_DATA.map((ed) => `- ${ed.degree} | ${ed.institution} (${ed.year}) - ${ed.honors}`).join('\n')}
-
-CERTIFICATIONS
-${CERTIFICATIONS_DATA.map((c) => `- ${c.title} (${c.issuer}, ${c.year})`).join('\n')}
-    `.trim();
-
-    const blob = new Blob([resumeText], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
+  const handleDownloadCV = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+    }
+    // Directly download the authentic Tushar_CV.pdf file
     const link = document.createElement('a');
-    link.href = url;
-    link.download = 'Tushar_Visuals_Resume_2026.txt';
+    link.href = cvPdf;
+    link.download = 'Tushar_CV.pdf';
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    URL.revokeObjectURL(url);
 
     setDownloadSuccess(true);
-    setTimeout(() => setDownloadSuccess(false), 4000);
+    setTimeout(() => setDownloadSuccess(false), 3500);
   };
 
   return (
@@ -69,7 +47,7 @@ ${CERTIFICATIONS_DATA.map((c) => `- ${c.title} (${c.issuer}, ${c.year})`).join('
             </h2>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <MagneticButton
               id="download-cv-btn"
               onClick={handleDownloadCV}
@@ -80,6 +58,18 @@ ${CERTIFICATIONS_DATA.map((c) => `- ${c.title} (${c.issuer}, ${c.year})`).join('
               <Download className="w-4 h-4 transition-transform duration-300 group-hover:translate-y-0.5" />
               <span>{downloadSuccess ? 'Downloaded!' : 'Download CV'}</span>
             </MagneticButton>
+
+            <a
+              href={cvPdf}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-neutral-300 hover:text-white text-xs font-display uppercase tracking-wider flex items-center gap-1.5 transition-colors cursor-pointer"
+              data-cursor="OPEN"
+              title="Preview PDF in browser"
+            >
+              <ExternalLink className="w-3.5 h-3.5 text-neutral-400" />
+              <span className="hidden sm:inline">Preview PDF</span>
+            </a>
           </div>
         </div>
 

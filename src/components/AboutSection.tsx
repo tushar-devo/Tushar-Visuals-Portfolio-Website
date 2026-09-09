@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { ArrowUpRight, Sparkles, Terminal, ShieldCheck, HeartHandshake, Compass } from 'lucide-react';
+import { ArrowUpRight, Sparkles, Terminal, ShieldCheck, HeartHandshake, Compass, Download } from 'lucide-react';
 import logoImg from '../images/logo.jpg';
+import cvPdf from '../pdf/Tushar_CV.pdf';
 
 interface AboutSectionProps {
   onOpenHireModal: () => void;
@@ -95,21 +96,32 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenHireModal, onO
             </div>
 
             {/* Action Links */}
-            <div className="flex flex-wrap items-center gap-4 pt-4">
+            <div className="flex flex-wrap items-center gap-3 pt-4">
               <button
                 onClick={onOpenHireModal}
-                className="px-6 py-3 rounded-full bg-[#FF2A2A] hover:bg-[#ff1515] text-white text-xs font-display font-bold uppercase tracking-wider flex items-center gap-2 shadow-[0_0_20px_rgba(255,42,42,0.35)] cursor-pointer"
+                className="px-6 py-3 rounded-full bg-[#FF2A2A] hover:bg-[#ff1515] text-white text-xs font-display font-bold uppercase tracking-wider flex items-center gap-2 shadow-[0_0_20px_rgba(255,42,42,0.35)] cursor-pointer transition-all duration-300"
                 data-cursor="LET'S TALK"
               >
                 <span>Work With Tushar</span>
                 <ArrowUpRight className="w-4 h-4" />
               </button>
+              <a
+                href={cvPdf}
+                download="Tushar_CV.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-5 py-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#FF2A2A]/40 text-white text-xs font-display uppercase tracking-wider transition-colors flex items-center gap-2 cursor-pointer"
+                data-cursor="DOWNLOAD"
+              >
+                <Download className="w-3.5 h-3.5 text-[#FF2A2A]" />
+                <span>Download CV</span>
+              </a>
               <button
                 onClick={onOpenResume}
-                className="px-6 py-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-display uppercase tracking-wider transition-colors cursor-pointer"
-                data-cursor="CV"
+                className="px-5 py-3 rounded-full bg-transparent hover:bg-white/5 text-neutral-400 hover:text-white text-xs font-display uppercase tracking-wider transition-colors cursor-pointer"
+                data-cursor="CREDENTIALS"
               >
-                <span>View Full Resume / CV</span>
+                <span>View Credentials</span>
               </button>
             </div>
           </div>
