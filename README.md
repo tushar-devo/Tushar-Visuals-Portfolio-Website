@@ -341,10 +341,11 @@ The official logo is located at `src/images/logo.jpg`.
 
 ---
 
-### Updating the CV / Resume PDF
+### Updating the CV / Resume PDF & In-Site Preview
 
-The downloadable CV is located at `src/pdf/Tushar_CV.pdf`.
-- When a user clicks the **"Download CV"** button on the website, it directly downloads this file (`Tushar_CV.pdf`).
+The downloadable and previewable CV is located at `src/pdf/Tushar_CV.pdf`.
+- **"Download CV"**: Initiates a direct browser download of `Tushar_CV.pdf`.
+- **"Preview PDF"**: Opens an in-site, page-sized pop-up modal (`PdfPreviewModal.tsx`) with toolbar controls (direct download, open in full tab, and Esc key dismissal).
 - To update the CV, replace `src/pdf/Tushar_CV.pdf` with your updated PDF file and copy it to `public/Tushar_CV.pdf`.
 
 ---

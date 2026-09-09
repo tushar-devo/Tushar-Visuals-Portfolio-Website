@@ -14,12 +14,14 @@ import { TestimonialsSection } from './components/TestimonialsSection';
 import { ResumeSection } from './components/ResumeSection';
 import { ContactSection } from './components/ContactSection';
 import { HireMeModal } from './components/HireMeModal';
+import { PdfPreviewModal } from './components/PdfPreviewModal';
 import { Footer } from './components/Footer';
 
 export default function App() {
   const [activePage, setActivePage] = useState<PageView>('home');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [hireModalOpen, setHireModalOpen] = useState<boolean>(false);
+  const [pdfPreviewOpen, setPdfPreviewOpen] = useState<boolean>(false);
   const [preselectedService, setPreselectedService] = useState<string | undefined>(undefined);
 
   // Scroll spy to update active navigation as user scrolls
@@ -109,6 +111,7 @@ export default function App() {
         <AboutSection
           onOpenHireModal={() => handleOpenHireModal()}
           onOpenResume={() => handleNavigate('resume', 'resume')}
+          onOpenPdfPreview={() => setPdfPreviewOpen(true)}
         />
 
         {/* 6. Skills & Technical Stack */}
@@ -121,7 +124,10 @@ export default function App() {
         <TestimonialsSection />
 
         {/* 9. Professional Resume & Credentials */}
-        <ResumeSection onOpenHireModal={() => handleOpenHireModal()} />
+        <ResumeSection
+          onOpenHireModal={() => handleOpenHireModal()}
+          onOpenPdfPreview={() => setPdfPreviewOpen(true)}
+        />
 
         {/* 10. Contact / Collaboration */}
         <ContactSection />
@@ -152,6 +158,12 @@ export default function App() {
           setPreselectedService(undefined);
         }}
         preselectedService={preselectedService}
+      />
+
+      {/* In-Site Page-Sized PDF Preview Modal */}
+      <PdfPreviewModal
+        isOpen={pdfPreviewOpen}
+        onClose={() => setPdfPreviewOpen(false)}
       />
     </div>
   );

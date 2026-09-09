@@ -1,16 +1,27 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Download, Briefcase, GraduationCap, Award, FileText, CheckCircle2, ArrowUpRight, ExternalLink } from 'lucide-react';
+import { Download, Briefcase, GraduationCap, Award, FileText, CheckCircle2, ArrowUpRight, Eye } from 'lucide-react';
 import { RESUME_EXPERIENCE, EDUCATION_DATA, CERTIFICATIONS_DATA, TOOLS_DATA } from '../data/portfolioData';
 import { MagneticButton } from './MagneticButton';
+import { PdfPreviewModal } from './PdfPreviewModal';
 import cvPdf from '../pdf/Tushar_CV.pdf';
 
 interface ResumeSectionProps {
   onOpenHireModal: () => void;
+  onOpenPdfPreview?: () => void;
 }
 
-export const ResumeSection: React.FC<ResumeSectionProps> = ({ onOpenHireModal }) => {
+export const ResumeSection: React.FC<ResumeSectionProps> = ({ onOpenHireModal, onOpenPdfPreview }) => {
   const [downloadSuccess, setDownloadSuccess] = useState(false);
+  const [internalPreviewOpen, setInternalPreviewOpen] = useState(false);
+
+  const handleOpenPreview = () => {
+    if (onOpenPdfPreview) {
+      onOpenPdfPreview();
+    } else {
+      setInternalPreviewOpen(true);
+    }
+  };
 
   const handleDownloadCV = (e?: React.MouseEvent) => {
     if (e) {
@@ -59,17 +70,17 @@ export const ResumeSection: React.FC<ResumeSectionProps> = ({ onOpenHireModal })
               <span>{downloadSuccess ? 'Downloaded!' : 'Download CV'}</span>
             </MagneticButton>
 
-            <a
-              href={cvPdf}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-neutral-300 hover:text-white text-xs font-display uppercase tracking-wider flex items-center gap-1.5 transition-colors cursor-pointer"
-              data-cursor="OPEN"
-              title="Preview PDF in browser"
+            <button
+              id="preview-pdf-btn"
+              type="button"
+              onClick={handleOpenPreview}
+              className="px-4 py-3.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#FF2A2A]/50 text-neutral-300 hover:text-white text-xs font-display uppercase tracking-wider flex items-center gap-2 transition-all duration-200 cursor-pointer hover:shadow-[0_0_20px_rgba(255,42,42,0.2)]"
+              data-cursor="PREVIEW"
+              title="Preview CV PDF as page size pop up"
             >
-              <ExternalLink className="w-3.5 h-3.5 text-neutral-400" />
-              <span className="hidden sm:inline">Preview PDF</span>
-            </a>
+              <Eye className="w-3.5 h-3.5 text-[#FF2A2A]" />
+              <span>Preview PDF</span>
+            </button>
           </div>
         </div>
 
@@ -223,6 +234,14 @@ export const ResumeSection: React.FC<ResumeSectionProps> = ({ onOpenHireModal })
           </div>
         </div>
       </div>
+
+      {/* Internal In-Site PDF Pop-Up Modal (Fallback) */}
+      {!onOpenPdfPreview && (
+        <PdfPreviewModal
+          isOpen={internalPreviewOpen}
+          onClose={() => setInternalPreviewOpen(false)}
+        />
+      )}
     </section>
   );
 };

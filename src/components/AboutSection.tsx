@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { ArrowUpRight, Sparkles, Terminal, ShieldCheck, HeartHandshake, Compass, Download } from 'lucide-react';
+import { ArrowUpRight, Sparkles, Terminal, ShieldCheck, HeartHandshake, Compass, Download, Eye } from 'lucide-react';
 import logoImg from '../images/logo.jpg';
 import cvPdf from '../pdf/Tushar_CV.pdf';
 
 interface AboutSectionProps {
   onOpenHireModal: () => void;
   onOpenResume: () => void;
+  onOpenPdfPreview?: () => void;
 }
 
-export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenHireModal, onOpenResume }) => {
+export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenHireModal, onOpenResume, onOpenPdfPreview }) => {
   const [cardMousePos, setCardMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
 
@@ -116,6 +117,18 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenHireModal, onO
                 <Download className="w-3.5 h-3.5 text-[#FF2A2A]" />
                 <span>Download CV</span>
               </a>
+              {onOpenPdfPreview && (
+                <button
+                  type="button"
+                  onClick={onOpenPdfPreview}
+                  className="px-4 py-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#FF2A2A]/50 text-neutral-300 hover:text-white text-xs font-display uppercase tracking-wider transition-colors flex items-center gap-1.5 cursor-pointer"
+                  data-cursor="PREVIEW"
+                  title="Preview CV PDF as pop up"
+                >
+                  <Eye className="w-3.5 h-3.5 text-[#FF2A2A]" />
+                  <span>Preview PDF</span>
+                </button>
+              )}
               <button
                 onClick={onOpenResume}
                 className="px-5 py-3 rounded-full bg-transparent hover:bg-white/5 text-neutral-400 hover:text-white text-xs font-display uppercase tracking-wider transition-colors cursor-pointer"
