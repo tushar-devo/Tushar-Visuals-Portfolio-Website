@@ -373,4 +373,4 @@ The official logo is located at `src/images/logo.jpg`.
 
 ---
 
-*For inquiries or collaboration, contact **hello@tusharvisuals.com**.*
+*For inquiries or collaboration, contact **mdtusharkgs.com**.*
