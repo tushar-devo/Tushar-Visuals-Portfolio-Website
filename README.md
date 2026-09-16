@@ -157,26 +157,55 @@ export interface Project {
 
 ---
 
-## 3D Canvas & Micro-Interaction Engine
+## 3D WebGL Canvas & Interactive Systems
 
-### 1. Three.js WebGL Scene
-Located in `src/components/ThreeDHeroCanvas.tsx`:
-- **Geometry**: Central icosahedron core, inner wireframe cage, outer orbital rings, and background particle cloud.
-- **Lighting**: Multidirectional lighting rig with an ambient base, key white light, and crimson point light (`#FF2A2A`) with exponential falloff.
-- **Mouse Dynamics**: Raycaster-free lerped vector tracking that rotates the 3D model toward the user's cursor with soft damping.
-- **Resource Cleanup**: Geometry, materials, and renderer contexts are automatically disposed on component unmount to prevent WebGL memory leaks.
+The website features five dedicated, high-performance **Three.js WebGL 3D animation modules** engineered with GPU-accelerated rendering, viewport-aware `IntersectionObserver` pause hooks (saving CPU/GPU when offscreen), and direct drag/orbit physics:
 
-### 2. Custom Elegant Cursor
+### 1. Hero 3D Monogram Sculpture (`ThreeDHeroCanvas.tsx`)
+Located in the Hero section:
+- **Geometry & Composition**: Architectural obsidian monogram 'T' sculpture with beveled geometry, dual crimson laser ribs, 3-axis gimbal rings, and 6 orbiting geometric satellites (octahedrons, tetrahedrons, icosahedrons).
+- **Interactive Drag & Inertia**: Direct mouse and touch drag to spin the 3D sculpture in all directions with simulated friction and inertia damping (`0.94` coefficient).
+- **Shockwave Dynamics**: Clicking triggers an energetic particle burst that expands the wireframe cage and surges the emissive core light.
+- **Lighting Rig**: Dual directional key lights + pulsing `#FF2A2A` crimson point lights with dynamic falloff.
+
+### 2. Skill Constellation Sphere (`ThreeDSkillsCanvas.tsx`)
+Located in the Technical Prowess section:
+- **Holographic Constellation**: Central wireframe geodesic icosahedron encircled by orbital rings and 10 floating 3D skill data nodes (`Photoshop`, `Illustrator`, `WordPress`, `Elementor`, `WooCommerce`, `Tailwind`, `Figma`, etc.).
+- **Dynamic Interconnections**: Real-time 3D laser vectors calculated between proximal nodes.
+- **Interactive Category Filtering**: Selecting a discipline (Graphic Design, WordPress Mastery, Digital Systems) instantly highlights and scales the corresponding nodes in 3D space.
+- **Full Drag-to-Rotate**: Users can grab and freely spin the constellation sphere.
+
+### 3. Capability Morphing Sculpture (`ThreeDServicesCanvas.tsx`)
+Located in the Studio Capabilities section:
+- **Real-Time 3D Morphing**: Smoothly interpolates geometry between active service packages:
+  - *Brand Identity*: Glossy obsidian monolith with orbital gold and red crystal rings.
+  - *WordPress Architecture*: Interlocking modular architectural blocks with wireframe boundary box.
+  - *UI/UX & Speed*: Concentric dual-torus gyroscope with pulsating icosahedron core.
+- **Interactive Orbit**: Supports pointer drag-to-spin with momentum decay.
+
+### 4. Communication Signal Beacon (`ThreeDContactBeacon.tsx`)
+Located in the Initiate Collaboration section:
+- **Futuristic Holographic Gyroscope**: Triple concentric gimbal rings rotating on distinct axes around an emissive red octahedron core with an architectural vertical laser beam and orbiting communication satellites.
+- **Interactive Physics**: Accelerates and rotates with touch/mouse interaction.
+
+### 5. Procedural Cyber-Wave Plane (`ThreeDWaveCanvas.tsx`)
+Located in the Why Work With Me section:
+- **Fluid Mathematical Terrain**: A 40×40 segmented plane animated with combined sine, cosine, and radial distance ripple functions to generate a cyber-minimalist terrain with white vertex stardust.
+- **Parallax Reactivity**: Subtly tilts and banks the camera perspective based on user cursor tracking.
+
+---
+
+### Custom Elegant Cursor
 Located in `src/components/CustomCursor.tsx`:
 - **Resting State**: Minimal 7px crimson dot with subtle glow.
 - **Hovering Interactive Controls**: Expands to a delicate 20px ring.
-- **Contextual Label Capsule**: Expands into a compact 22px-tall pill badge with dynamic width and micro-monospace label (`VIEW`, `FILTER`, `GOTO`, `NEXT`, `CLOSE`).
+- **Contextual Label Capsule**: Expands into a compact 22px-tall pill badge with dynamic width and micro-monospace label (`VIEW`, `FILTER`, `GOTO`, `NEXT`, `CLOSE`, `DRAG`).
 - **Touch Safe**: Automatically hides on touch-enabled devices to preserve native mobile UX.
 
-### 3. Magnetic Physics
+### Magnetic Physics
 Located in `src/components/MagneticButton.tsx`:
 - Bound via Framer Motion's `useMotionValue` and `useSpring`.
-- Translates elements toward the cursor up to an offset threshold (`magneticStrength = 0.35`) and snaps back smoothly on mouse leave.
+- Translates elements toward the cursor up to an offset threshold and snaps back smoothly on mouse leave.
 
 ---
 
@@ -197,19 +226,24 @@ tushar-visuals/
 │   ├── components/
 │   │   ├── Navbar.tsx             # Sticky header with navigation & hire trigger
 │   │   ├── Hero.tsx               # Hero section layout & telemetry chips
-│   │   ├── ThreeDHeroCanvas.tsx   # Three.js WebGL 3D interactive core
+│   │   ├── ThreeDHeroCanvas.tsx   # Three.js 3D monogram sculpture with drag inertia
+│   │   ├── ThreeDSkillsCanvas.tsx # Three.js 3D holographic constellation sphere
+│   │   ├── ThreeDServicesCanvas.tsx # Three.js 3D morphing capability sculpture
+│   │   ├── ThreeDContactBeacon.tsx# Three.js 3D holographic transmission beacon
+│   │   ├── ThreeDWaveCanvas.tsx   # Three.js 3D procedural cyber-terrain wave
 │   │   ├── Portfolio.tsx          # Filterable project grid & 3D tilt cards
 │   │   ├── CaseStudyModal.tsx     # Fullscreen case study & mockup lightbox
 │   │   ├── AboutSection.tsx       # Studio profile, values & design philosophy
-│   │   ├── SkillsSection.tsx      # Graphic & web skills matrix
-│   │   ├── ServicesSection.tsx    # Transparent service offerings & deliverables
+│   │   ├── SkillsSection.tsx      # Graphic & web skills matrix + 3D constellation
+│   │   ├── ServicesSection.tsx    # Transparent service offerings + 3D morph stage
 │   │   ├── ProcessSection.tsx     # 4-stage creative methodology roadmap
-│   │   ├── WhyWorkWithMe.tsx      # Value proposition & client guarantees
+│   │   ├── WhyWorkWithMe.tsx      # Value proposition + 3D cyber-wave backdrop
 │   │   ├── TestimonialsSection.tsx# Verified client review carousel
-│   │   ├── ContactSection.tsx     # Lead capture form & direct contact links
+│   │   ├── ContactSection.tsx     # Lead capture form + 3D signal beacon
 │   │   ├── Footer.tsx             # Studio sign-off, legal & back-to-top
 │   │   ├── CustomCursor.tsx       # Spring-interpolated custom cursor
 │   │   ├── MagneticButton.tsx     # Reusable magnetic spring wrapper
+│   │   ├── PdfPreviewModal.tsx    # In-site page-sized CV PDF viewer popup
 │   │   └── HireMeModal.tsx        # Project inquiry commission modal
 │   ├── data/
 │   │   └── portfolioData.ts       # Single source of truth for projects & content

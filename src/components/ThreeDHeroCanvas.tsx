@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 
 interface Props {
@@ -9,11 +9,24 @@ interface Props {
 export const ThreeDHeroCanvas: React.FC<Props> = ({ className = '', interactive = true }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
     const container = containerRef.current;
     const canvas = canvasRef.current;
     if (!container || !canvas) return;
+
+    // Visibility observer to pause animation when scrolled away
+    let isVisible = true;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          isVisible = entry.isIntersecting;
+        });
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(container);
 
     // Scene
     const scene = new THREE.Scene();
@@ -37,43 +50,51 @@ export const ThreeDHeroCanvas: React.FC<Props> = ({ className = '', interactive 
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.2;
+    renderer.toneMappingExposure = 1.35;
 
-    // Center Group
+    // Center Master Group
     const mainGroup = new THREE.Group();
     scene.add(mainGroup);
 
     // --- MATERIALS ---
     // Ultra-glossy obsidian metallic black
     const metallicBlack = new THREE.MeshStandardMaterial({
-      color: 0x0a0a0a,
+      color: 0x090909,
       roughness: 0.12,
       metalness: 0.95,
       wireframe: false
     });
 
-    // Dark brushed metal
+    // Dark brushed titanium
     const darkMetal = new THREE.MeshStandardMaterial({
-      color: 0x141414,
-      roughness: 0.25,
-      metalness: 0.85
+      color: 0x181818,
+      roughness: 0.28,
+      metalness: 0.88
     });
 
-    // Crimson Red Emissive Accent (#FF2A2A)
+    // Signature Crimson Red Emissive Accent (#FF2A2A)
     const redEmissive = new THREE.MeshStandardMaterial({
       color: 0xff2a2a,
       emissive: 0xff1010,
-      emissiveIntensity: 0.85,
+      emissiveIntensity: 0.95,
       roughness: 0.1,
-      metalness: 0.3
+      metalness: 0.4
     });
 
-    // Wireframe accent for architectural drafting feel
+    // Architectural neon wireframe accent
     const wireframeAccent = new THREE.MeshBasicMaterial({
       color: 0xff2a2a,
       wireframe: true,
       transparent: true,
-      opacity: 0.22
+      opacity: 0.28
+    });
+
+    // Frosted glass-like ring material
+    const ringMat = new THREE.MeshStandardMaterial({
+      color: 0x505050,
+      roughness: 0.15,
+      metalness: 0.9,
+      wireframe: false
     });
 
     // --- 3D MONOGRAM "T" SCULPTURE ---
@@ -86,7 +107,7 @@ export const ThreeDHeroCanvas: React.FC<Props> = ({ className = '', interactive 
     tGroup.add(topBar);
 
     // Subtle red laser slice along top bar
-    const topLaserGeo = new THREE.BoxGeometry(2.42, 0.05, 0.72);
+    const topLaserGeo = new THREE.BoxGeometry(2.42, 0.06, 0.72);
     const topLaser = new THREE.Mesh(topLaserGeo, redEmissive);
     topLaser.position.y = 0.8;
     tGroup.add(topLaser);
@@ -97,86 +118,101 @@ export const ThreeDHeroCanvas: React.FC<Props> = ({ className = '', interactive 
     stem.position.y = -0.2;
     tGroup.add(stem);
 
-    // Vertical red light rib
-    const stemLaserGeo = new THREE.BoxGeometry(0.06, 2.12, 0.7);
+    // Vertical red laser rib
+    const stemLaserGeo = new THREE.BoxGeometry(0.08, 2.12, 0.7);
     const stemLaser = new THREE.Mesh(stemLaserGeo, redEmissive);
     stemLaser.position.set(0.28, -0.2, 0);
     tGroup.add(stemLaser);
 
-    // 3. Architectural faceted plinth / base
-    const baseGeo = new THREE.CylinderGeometry(0.9, 1.2, 0.25, 8);
+    // 3. Faceted architectural plinth / base
+    const baseGeo = new THREE.CylinderGeometry(0.9, 1.25, 0.25, 8);
     const baseMesh = new THREE.Mesh(baseGeo, darkMetal);
     baseMesh.position.y = -1.35;
     tGroup.add(baseMesh);
 
     // Floating wireframe bounding cage around the 'T'
-    const cageGeo = new THREE.BoxGeometry(2.7, 2.8, 1.3);
+    const cageGeo = new THREE.BoxGeometry(2.8, 2.9, 1.4);
     const cageMesh = new THREE.Mesh(cageGeo, wireframeAccent);
     cageMesh.position.y = 0.05;
     tGroup.add(cageMesh);
 
     mainGroup.add(tGroup);
 
-    // --- ORBITAL RINGS & SATELLITES ---
+    // --- ORBITAL MULTI-AXIS GIMBAL RINGS & SATELLITES ---
     const ringGroup = new THREE.Group();
 
     // Ring 1 - inclined torus
-    const ring1Geo = new THREE.TorusGeometry(2.2, 0.02, 16, 100);
-    const ring1Mat = new THREE.MeshStandardMaterial({
-      color: 0x404040,
-      roughness: 0.2,
-      metalness: 0.8
-    });
-    const ring1 = new THREE.Mesh(ring1Geo, ring1Mat);
+    const ring1Geo = new THREE.TorusGeometry(2.25, 0.025, 16, 100);
+    const ring1 = new THREE.Mesh(ring1Geo, ringMat);
     ring1.rotation.x = Math.PI / 3;
     ringGroup.add(ring1);
 
-    // Ring 2 - wider tilted ring with red accent bead
-    const ring2Geo = new THREE.TorusGeometry(2.6, 0.015, 16, 120);
-    const ring2Mat = new THREE.MeshStandardMaterial({
-      color: 0x303030,
-      roughness: 0.3,
-      metalness: 0.9
-    });
-    const ring2 = new THREE.Mesh(ring2Geo, ring2Mat);
+    // Ring 2 - tilted counter ring
+    const ring2Geo = new THREE.TorusGeometry(2.65, 0.02, 16, 120);
+    const ring2 = new THREE.Mesh(ring2Geo, ringMat);
     ring2.rotation.y = Math.PI / 4;
     ring2.rotation.x = -Math.PI / 6;
     ringGroup.add(ring2);
 
+    // Ring 3 - outer razor ring with red emissive sheen
+    const ring3Geo = new THREE.TorusGeometry(3.05, 0.012, 16, 140);
+    const ring3Mat = new THREE.MeshStandardMaterial({
+      color: 0xff2a2a,
+      emissive: 0x880505,
+      emissiveIntensity: 0.5,
+      roughness: 0.2,
+      metalness: 0.8
+    });
+    const ring3 = new THREE.Mesh(ring3Geo, ring3Mat);
+    ring3.rotation.z = Math.PI / 5;
+    ringGroup.add(ring3);
+
     // Floating satellite geometric crystals
-    const satellites: THREE.Mesh[] = [];
-    const satGeo = new THREE.OctahedronGeometry(0.18, 0);
-    for (let i = 0; i < 4; i++) {
+    const satellites: { mesh: THREE.Mesh; baseAngle: number; speed: number; radius: number; rotSpeed: { x: number; y: number } }[] = [];
+    const satGeos = [
+      new THREE.OctahedronGeometry(0.18, 0),
+      new THREE.TetrahedronGeometry(0.16, 0),
+      new THREE.IcosahedronGeometry(0.15, 0),
+      new THREE.BoxGeometry(0.15, 0.15, 0.15)
+    ];
+
+    for (let i = 0; i < 6; i++) {
       const isRed = i % 2 === 0;
-      const sat = new THREE.Mesh(satGeo, isRed ? redEmissive : metallicBlack);
-      const angle = (i / 4) * Math.PI * 2;
-      const radius = 2.1 + (i % 2) * 0.4;
-      sat.position.set(Math.cos(angle) * radius, Math.sin(angle) * 0.8, Math.sin(angle) * radius);
+      const geo = satGeos[i % satGeos.length];
+      const sat = new THREE.Mesh(geo, isRed ? redEmissive : metallicBlack);
+      const angle = (i / 6) * Math.PI * 2;
+      const radius = 2.2 + (i % 3) * 0.35;
+      sat.position.set(Math.cos(angle) * radius, Math.sin(angle) * 0.7, Math.sin(angle) * radius);
       ringGroup.add(sat);
-      satellites.push(sat);
+      satellites.push({
+        mesh: sat,
+        baseAngle: angle,
+        speed: (i % 2 === 0 ? 0.35 : -0.28),
+        radius,
+        rotSpeed: { x: 0.02 + Math.random() * 0.02, y: 0.015 + Math.random() * 0.02 }
+      });
     }
 
     mainGroup.add(ringGroup);
 
-    // --- BACKGROUND FLOATING PARTICLES ---
-    const particleCount = 120;
+    // --- BACKGROUND DYNAMIC 3D VORTEX PARTICLES ---
+    const particleCount = 200;
     const particleGeometry = new THREE.BufferGeometry();
     const particlePositions = new Float32Array(particleCount * 3);
     const particleColors = new Float32Array(particleCount * 3);
 
     const cWhite = new THREE.Color(0xffffff);
     const cRed = new THREE.Color(0xff2a2a);
-    const cDark = new THREE.Color(0x555555);
+    const cDim = new THREE.Color(0x666666);
 
     for (let i = 0; i < particleCount; i++) {
       const idx = i * 3;
-      particlePositions[idx] = (Math.random() - 0.5) * 12;
-      particlePositions[idx + 1] = (Math.random() - 0.5) * 10;
-      particlePositions[idx + 2] = (Math.random() - 0.5) * 8 - 1;
+      particlePositions[idx] = (Math.random() - 0.5) * 14;
+      particlePositions[idx + 1] = (Math.random() - 0.5) * 12;
+      particlePositions[idx + 2] = (Math.random() - 0.5) * 9 - 1;
 
-      // Color choice: 15% red, 35% white, 50% subtle gray
       const rand = Math.random();
-      const color = rand > 0.85 ? cRed : rand > 0.5 ? cWhite : cDark;
+      const color = rand > 0.75 ? cRed : rand > 0.4 ? cWhite : cDim;
       particleColors[idx] = color.r;
       particleColors[idx + 1] = color.g;
       particleColors[idx + 2] = color.b;
@@ -186,10 +222,10 @@ export const ThreeDHeroCanvas: React.FC<Props> = ({ className = '', interactive 
     particleGeometry.setAttribute('color', new THREE.BufferAttribute(particleColors, 3));
 
     const particleMaterial = new THREE.PointsMaterial({
-      size: 0.055,
+      size: 0.058,
       vertexColors: true,
       transparent: true,
-      opacity: 0.65,
+      opacity: 0.75,
       blending: THREE.AdditiveBlending
     });
 
@@ -197,46 +233,92 @@ export const ThreeDHeroCanvas: React.FC<Props> = ({ className = '', interactive 
     scene.add(particles);
 
     // --- LIGHTING ---
-    // Ambient light
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.35);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
     scene.add(ambientLight);
 
-    // Key Light - White rim light
-    const keyLight = new THREE.DirectionalLight(0xffffff, 2.2);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 2.4);
     keyLight.position.set(5, 6, 4);
     scene.add(keyLight);
 
-    // Fill Light - Soft cool white
-    const fillLight = new THREE.DirectionalLight(0xc0d0ff, 0.8);
+    const fillLight = new THREE.DirectionalLight(0xa0c0ff, 0.9);
     fillLight.position.set(-5, -3, 2);
     scene.add(fillLight);
 
-    // Dramatic Crimson Red Point Light (adds the signature #FF2A2A glow reflections)
-    const redLight = new THREE.PointLight(0xff2a2a, 3.5, 12, 1.5);
+    // Signature Crimson Red Point Lights
+    const redLight = new THREE.PointLight(0xff2a2a, 4.0, 14, 1.4);
     redLight.position.set(2, -1.5, 2.5);
     scene.add(redLight);
 
-    const redLightTop = new THREE.PointLight(0xff2a2a, 1.8, 8, 2);
+    const redLightTop = new THREE.PointLight(0xff2a2a, 2.2, 10, 1.8);
     redLightTop.position.set(-2, 3, -1);
     scene.add(redLightTop);
 
-    // --- INTERACTION / MOUSE PARALLAX ---
-    let targetRotX = 0;
-    let targetRotY = 0;
-    let currentRotX = 0;
-    let currentRotY = 0;
+    // --- INTERACTIVE DRAG & VELOCITY PHYSICS ---
+    let isUserDragging = false;
+    let prevMouseX = 0;
+    let prevMouseY = 0;
+    let rotVelX = 0;
+    let rotVelY = 0;
+    let hoverParallaxX = 0;
+    let hoverParallaxY = 0;
+    let shockwaveEnergy = 0;
 
-    const handlePointerMove = (e: MouseEvent) => {
+    const handlePointerDown = (e: PointerEvent) => {
       if (!interactive) return;
-      const { innerWidth, innerHeight } = window;
-      const x = (e.clientX / innerWidth) * 2 - 1;
-      const y = -(e.clientY / innerHeight) * 2 + 1;
-
-      targetRotY = x * 0.45;
-      targetRotX = -y * 0.3;
+      isUserDragging = true;
+      setIsDragging(true);
+      prevMouseX = e.clientX;
+      prevMouseY = e.clientY;
+      rotVelX = 0;
+      rotVelY = 0;
+      canvas.setPointerCapture(e.pointerId);
     };
 
-    window.addEventListener('mousemove', handlePointerMove);
+    const handlePointerMove = (e: PointerEvent) => {
+      if (!interactive) return;
+
+      const { innerWidth, innerHeight } = window;
+      const nx = (e.clientX / innerWidth) * 2 - 1;
+      const ny = -(e.clientY / innerHeight) * 2 + 1;
+      hoverParallaxX = nx * 0.35;
+      hoverParallaxY = -ny * 0.25;
+
+      if (isUserDragging) {
+        const deltaX = e.clientX - prevMouseX;
+        const deltaY = e.clientY - prevMouseY;
+        prevMouseX = e.clientX;
+        prevMouseY = e.clientY;
+
+        mainGroup.rotation.y += deltaX * 0.008;
+        mainGroup.rotation.x += deltaY * 0.008;
+
+        rotVelY = deltaX * 0.008;
+        rotVelX = deltaY * 0.008;
+      }
+    };
+
+    const handlePointerUp = (e: PointerEvent) => {
+      if (isUserDragging) {
+        isUserDragging = false;
+        setIsDragging(false);
+        try {
+          canvas.releasePointerCapture(e.pointerId);
+        } catch {
+          // pointer capture release fallback
+        }
+      }
+    };
+
+    const handleClick = () => {
+      // Trigger a shockwave pulse
+      shockwaveEnergy = 1.0;
+    };
+
+    canvas.addEventListener('pointerdown', handlePointerDown);
+    window.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('pointerup', handlePointerUp);
+    window.addEventListener('pointercancel', handlePointerUp);
+    canvas.addEventListener('click', handleClick);
 
     // Resize Handler
     const handleResize = () => {
@@ -256,38 +338,57 @@ export const ThreeDHeroCanvas: React.FC<Props> = ({ className = '', interactive 
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
+
+      if (!isVisible) return; // Save GPU when scrolled away
+
       const elapsedTime = clock.getElapsedTime();
 
-      // Smooth lerp mouse parallax
-      currentRotX += (targetRotX - currentRotX) * 0.05;
-      currentRotY += (targetRotY - currentRotY) * 0.05;
+      // Inertia decay
+      if (!isUserDragging) {
+        rotVelX *= 0.94;
+        rotVelY *= 0.94;
 
-      // Subtle continuous idle rotation + parallax
-      tGroup.rotation.y = elapsedTime * 0.28 + currentRotY;
-      tGroup.rotation.x = Math.sin(elapsedTime * 0.35) * 0.08 + currentRotX;
-      tGroup.position.y = Math.sin(elapsedTime * 0.8) * 0.12;
+        mainGroup.rotation.x += rotVelX;
+        mainGroup.rotation.y += rotVelY;
 
-      // Counter-rotate rings for multi-dimensional depth
-      ringGroup.rotation.y = -elapsedTime * 0.18 + currentRotY * 0.5;
-      ringGroup.rotation.z = Math.cos(elapsedTime * 0.25) * 0.15;
+        // Idle slow spin + hover parallax
+        mainGroup.rotation.y += 0.004;
+        mainGroup.rotation.x += (hoverParallaxY - mainGroup.rotation.x) * 0.02;
+        mainGroup.rotation.z = Math.sin(elapsedTime * 0.4) * 0.04;
+      }
+
+      // Floating gentle bobbing
+      tGroup.position.y = Math.sin(elapsedTime * 1.2) * 0.12;
+
+      // Gimbal counter-rotations
+      ringGroup.rotation.y = -elapsedTime * 0.15;
+      ringGroup.rotation.z = Math.cos(elapsedTime * 0.3) * 0.12;
 
       // Orbit satellites around their paths
       satellites.forEach((sat, i) => {
-        sat.rotation.x += 0.02;
-        sat.rotation.y += 0.03;
-        const angle = (i / 4) * Math.PI * 2 + elapsedTime * 0.3 * (i % 2 === 0 ? 1 : -1);
-        const radius = 2.2 + Math.sin(elapsedTime + i) * 0.15;
-        sat.position.x = Math.cos(angle) * radius;
-        sat.position.z = Math.sin(angle) * radius;
-        sat.position.y = Math.sin(elapsedTime * 1.5 + i) * 0.4;
+        sat.mesh.rotation.x += sat.rotSpeed.x;
+        sat.mesh.rotation.y += sat.rotSpeed.y;
+
+        const currentAngle = sat.baseAngle + elapsedTime * sat.speed;
+        const r = sat.radius + Math.sin(elapsedTime * 2 + i) * 0.12;
+        sat.mesh.position.x = Math.cos(currentAngle) * r;
+        sat.mesh.position.z = Math.sin(currentAngle) * r;
+        sat.mesh.position.y = Math.sin(elapsedTime * 1.8 + i) * 0.45;
       });
 
-      // Slowly rotate particle field
-      particles.rotation.y = elapsedTime * 0.03;
-      particles.rotation.x = Math.sin(elapsedTime * 0.02) * 0.05;
+      // Particle vortex motion
+      particles.rotation.y = elapsedTime * 0.035;
+      particles.rotation.x = Math.sin(elapsedTime * 0.03) * 0.06;
 
-      // Pulse red accent light subtly
-      redLight.intensity = 3.2 + Math.sin(elapsedTime * 2) * 0.8;
+      // Shockwave decay & light pulse
+      if (shockwaveEnergy > 0.01) {
+        shockwaveEnergy *= 0.92;
+        cageMesh.scale.setScalar(1 + shockwaveEnergy * 0.35);
+        redLight.intensity = 4.0 + shockwaveEnergy * 8.0;
+      } else {
+        cageMesh.scale.setScalar(1);
+        redLight.intensity = 3.8 + Math.sin(elapsedTime * 2.5) * 0.9;
+      }
 
       renderer.render(scene, camera);
     };
@@ -295,7 +396,12 @@ export const ThreeDHeroCanvas: React.FC<Props> = ({ className = '', interactive 
     animate();
 
     return () => {
-      window.removeEventListener('mousemove', handlePointerMove);
+      observer.disconnect();
+      canvas.removeEventListener('pointerdown', handlePointerDown);
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerup', handlePointerUp);
+      window.removeEventListener('pointercancel', handlePointerUp);
+      canvas.removeEventListener('click', handleClick);
       window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationFrameId);
 
@@ -309,7 +415,8 @@ export const ThreeDHeroCanvas: React.FC<Props> = ({ className = '', interactive 
         cageGeo,
         ring1Geo,
         ring2Geo,
-        satGeo,
+        ring3Geo,
+        ...satGeos,
         particleGeometry
       ].forEach((g) => g.dispose());
 
@@ -318,8 +425,8 @@ export const ThreeDHeroCanvas: React.FC<Props> = ({ className = '', interactive 
         darkMetal,
         redEmissive,
         wireframeAccent,
-        ring1Mat,
-        ring2Mat,
+        ringMat,
+        ring3Mat,
         particleMaterial
       ].forEach((m) => m.dispose());
 
@@ -330,10 +437,13 @@ export const ThreeDHeroCanvas: React.FC<Props> = ({ className = '', interactive 
   return (
     <div
       ref={containerRef}
-      className={`relative w-full h-full pointer-events-none select-none ${className}`}
-      aria-hidden="true"
+      className={`relative w-full h-full select-none ${className}`}
+      aria-label="3D Interactive Monogram Sculpture"
     >
-      <canvas ref={canvasRef} className="w-full h-full block" />
+      <canvas
+        ref={canvasRef}
+        className={`w-full h-full block ${isDragging ? 'cursor-grabbing' : 'cursor-grab'} touch-none`}
+      />
     </div>
   );
 };

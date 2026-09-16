@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Eye, Crosshair, Compass, Code2, Gauge, MessageSquare, ArrowUpRight } from 'lucide-react';
 import { WHY_WORK_WITH_ME } from '../data/portfolioData';
+import { ThreeDWaveCanvas } from './ThreeDWaveCanvas';
 
 const iconMap: Record<string, React.ElementType> = {
   Eye,
@@ -18,8 +19,13 @@ interface WhyProps {
 
 export const WhyWorkWithMe: React.FC<WhyProps> = ({ onOpenHireModal }) => {
   return (
-    <section className="relative py-28 px-6 md:px-12 bg-black border-t border-white/5">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative py-28 px-6 md:px-12 bg-black border-t border-white/5 overflow-hidden">
+      {/* Interactive 3D Cyber-Wave Background */}
+      <div className="absolute inset-0 opacity-30 pointer-events-none">
+        <ThreeDWaveCanvas className="w-full h-full" />
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div>

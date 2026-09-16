@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Mail, MapPin, Clock, ArrowRight, ArrowUpRight, CheckCircle, Send, Globe, MessageSquare } from 'lucide-react';
 import { MagneticButton } from './MagneticButton';
+import { ThreeDContactBeacon } from './ThreeDContactBeacon';
 
 export const ContactSection: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -122,6 +123,11 @@ export const ContactSection: React.FC = () => {
                   </div>
                 </div>
               </div>
+            </div>
+
+            {/* Interactive 3D Holographic Transmission Beacon */}
+            <div className="h-[250px] sm:h-[280px] rounded-2xl bg-neutral-950/80 border border-white/10 overflow-hidden relative shadow-[0_0_35px_rgba(0,0,0,0.8)]">
+              <ThreeDContactBeacon className="w-full h-full" />
             </div>
 
             {/* Social Channels Pill Box with Subtle Lift & Red Highlight */}

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowUpRight, CheckCircle2, ChevronRight, Sparkles } from 'lucide-react';
+import { ArrowUpRight, CheckCircle2, ChevronRight, Sparkles, Box, ShieldCheck } from 'lucide-react';
 import { SERVICES } from '../data/portfolioData';
+import { ThreeDServicesCanvas } from './ThreeDServicesCanvas';
 
 interface ServicesSectionProps {
   onOpenHireModal: (serviceName?: string) => void;
@@ -9,6 +10,7 @@ interface ServicesSectionProps {
 
 export const ServicesSection: React.FC<ServicesSectionProps> = ({ onOpenHireModal }) => {
   const [activeServiceId, setActiveServiceId] = useState<string>(SERVICES[0].id);
+  const activeService = SERVICES.find((s) => s.id === activeServiceId) || SERVICES[0];
 
   return (
     <section id="services" className="relative py-28 px-6 md:px-12 bg-black border-t border-white/5">
@@ -33,6 +35,76 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onOpenHireModa
           <p className="text-sm sm:text-base text-neutral-400 max-w-md font-light">
             End-to-end design and web engineering packages tailored to elevate venture-backed founders and forward-thinking brands.
           </p>
+        </div>
+
+        {/* Interactive 3D Capability Showcase Stage */}
+        <div className="mb-14 rounded-3xl bg-neutral-950/80 border border-white/10 overflow-hidden relative shadow-[0_0_40px_rgba(0,0,0,0.8)]">
+          <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#FF2A2A] to-transparent" />
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 items-center">
+            {/* Left Interactive 3D Canvas (6 cols) */}
+            <div className="lg:col-span-6 h-[340px] sm:h-[400px] relative bg-black/60 border-b lg:border-b-0 lg:border-r border-white/10 flex items-center justify-center">
+              <ThreeDServicesCanvas
+                className="w-full h-full"
+                serviceId={activeServiceId}
+              />
+            </div>
+
+            {/* Right Active Service Detail Spotlight (6 cols) */}
+            <div className="lg:col-span-6 p-6 sm:p-8 flex flex-col justify-between h-full space-y-6">
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <Box className="w-4 h-4 text-[#FF2A2A]" />
+                    <span className="text-xs font-mono tracking-widest text-[#FF2A2A] uppercase font-bold">
+                      {activeService.number} // ACTIVE 3D SPECIFICATION
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-mono text-neutral-400 bg-white/5 px-2.5 py-1 rounded">
+                    CUSTOM BUILT
+                  </span>
+                </div>
+
+                <h3 className="text-2xl sm:text-3xl font-display font-black text-white uppercase tracking-tight mb-2">
+                  {activeService.title}
+                </h3>
+                <div className="text-xs font-mono text-neutral-300 uppercase tracking-wider mb-4">
+                  {activeService.tagline}
+                </div>
+                <p className="text-xs sm:text-sm text-neutral-400 font-light leading-relaxed mb-6">
+                  {activeService.description}
+                </p>
+
+                {/* Key deliverables checklist */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-6">
+                  {activeService.deliverables.slice(0, 4).map((d) => (
+                    <div key={d} className="flex items-center gap-2 text-xs font-mono text-neutral-300">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#FF2A2A] shrink-0" />
+                      <span className="truncate">{d}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Action row */}
+              <div className="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
+                <div className="text-[11px] font-mono text-neutral-400">
+                  <span>Turnaround: </span>
+                  <span className="text-white font-semibold">1 – 3 Weeks</span>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => onOpenHireModal(activeService.title)}
+                  className="px-6 py-2.5 rounded-full bg-[#FF2A2A] hover:bg-[#ff1515] text-white text-xs font-display font-bold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 shadow-[0_0_20px_rgba(255,42,42,0.4)] cursor-pointer"
+                  data-cursor="INQUIRE"
+                >
+                  <span>Book This Package</span>
+                  <ArrowUpRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Services List / Accordion-style Interactive Cards */}
