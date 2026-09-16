@@ -7,9 +7,10 @@ import { MagneticButton } from './MagneticButton';
 interface HeroProps {
   onViewWork: () => void;
   onHireMe: () => void;
+  isLoaded?: boolean;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onViewWork, onHireMe }) => {
+export const Hero: React.FC<HeroProps> = ({ onViewWork, onHireMe, isLoaded = true }) => {
   return (
     <section
       id="hero"
@@ -23,9 +24,9 @@ export const Hero: React.FC<HeroProps> = ({ onViewWork, onHireMe }) => {
       {/* Top Tagline Pill */}
       <div className="relative z-10 max-w-7xl mx-auto w-full pt-4">
         <motion.div
-          initial={{ opacity: 0, y: -15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0, y: -20 }}
+          animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
+          transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.1] backdrop-blur-md"
         >
           <span className="w-2 h-2 rounded-full bg-[#FF2A2A] animate-pulse" />
@@ -40,9 +41,9 @@ export const Hero: React.FC<HeroProps> = ({ onViewWork, onHireMe }) => {
         {/* Left Column: Bold Editorial Typography */}
         <div className="lg:col-span-7 flex flex-col justify-center">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, y: 40 }}
+            animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+            transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           >
             <h1 className="text-4xl sm:text-6xl xl:text-7xl font-display font-black tracking-tight leading-[1.05] text-white uppercase mb-6">
               I DESIGN{' '}
@@ -52,16 +53,21 @@ export const Hero: React.FC<HeroProps> = ({ onViewWork, onHireMe }) => {
               THAT MAKE BRANDS{' '}
               <span className="relative inline-block text-white">
                 IMPOSSIBLE
-                <span className="absolute bottom-1 left-0 w-full h-[3px] bg-[#FF2A2A]" />
+                <motion.span
+                  initial={{ scaleX: 0 }}
+                  animate={isLoaded ? { scaleX: 1 } : { scaleX: 0 }}
+                  transition={{ duration: 0.8, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  className="absolute bottom-1 left-0 w-full h-[3px] bg-[#FF2A2A] origin-left"
+                />
               </span>{' '}
               TO IGNORE.
             </h1>
           </motion.div>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, y: 25 }}
+            animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 25 }}
+            transition={{ duration: 0.85, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
             className="text-base sm:text-lg text-[#A0A0A0] max-w-2xl leading-relaxed mb-8 font-light"
           >
             Graphic Designer & WordPress Web Designer crafting bold identities, digital experiences,
@@ -70,9 +76,9 @@ export const Hero: React.FC<HeroProps> = ({ onViewWork, onHireMe }) => {
 
           {/* Action CTAs with Magnetic Physics, Arrow Slide & Subtle Red Glow */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, y: 25 }}
+            animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 25 }}
+            transition={{ duration: 0.85, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-wrap items-center gap-4"
           >
             <MagneticButton
@@ -100,9 +106,9 @@ export const Hero: React.FC<HeroProps> = ({ onViewWork, onHireMe }) => {
 
           {/* Micro Stat Badges */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.5 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.9, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="grid grid-cols-3 gap-6 pt-10 mt-10 border-t border-white/10 max-w-lg"
           >
             <div>
@@ -127,27 +133,37 @@ export const Hero: React.FC<HeroProps> = ({ onViewWork, onHireMe }) => {
         </div>
 
         {/* Right Column: Interactive 3D Monogram Sculpture */}
-        <div className="lg:col-span-5 h-[380px] sm:h-[480px] lg:h-[580px] relative flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.85 }}
+          animate={isLoaded ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.85 }}
+          transition={{ duration: 1.1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="lg:col-span-5 h-[380px] sm:h-[480px] lg:h-[580px] relative flex items-center justify-center"
+        >
           <div className="absolute inset-0 flex items-center justify-center">
             {/* 3D Canvas with mouse tracking and red reflections */}
             <ThreeDHeroCanvas className="w-full h-full" />
           </div>
 
           {/* Floating contextual tag overlay */}
-          <div className="absolute bottom-4 right-4 bg-black/70 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded text-[10px] font-mono text-neutral-400 flex items-center gap-2">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+            transition={{ duration: 0.6, delay: 0.9 }}
+            className="absolute bottom-4 right-4 bg-black/70 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded text-[10px] font-mono text-neutral-400 flex items-center gap-2"
+          >
             <Sparkles className="w-3 h-3 text-[#FF2A2A]" />
             <span>INTERACTIVE 3D • DRAG & HOVER</span>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
 
       {/* Bottom Row: Scroll Indicator & Availability Status */}
       <div className="relative z-10 max-w-7xl mx-auto w-full flex items-center justify-between pt-4 border-t border-white/5">
         <motion.button
           onClick={onViewWork}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+          transition={{ delay: 0.7, duration: 0.6 }}
           className="group flex items-center gap-2 text-[11px] font-mono tracking-widest text-neutral-400 hover:text-white uppercase transition-colors"
           data-cursor="SCROLL"
         >
@@ -156,14 +172,19 @@ export const Hero: React.FC<HeroProps> = ({ onViewWork, onHireMe }) => {
           <ChevronDown className="w-3.5 h-3.5 animate-bounce text-[#FF2A2A]" />
         </motion.button>
 
-        <div className="hidden sm:flex items-center gap-4 text-xs font-mono text-neutral-400">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+          transition={{ delay: 0.75, duration: 0.6 }}
+          className="hidden sm:flex items-center gap-4 text-xs font-mono text-neutral-400"
+        >
           <div className="flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-emerald-500" />
             <span className="text-neutral-300">AVAILABLE Q1/Q2</span>
           </div>
           <span className="text-neutral-600">•</span>
           <span>BASED IN GLOBAL REMOTE</span>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

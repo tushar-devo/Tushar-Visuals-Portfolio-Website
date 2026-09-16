@@ -45,7 +45,13 @@ export const ResumeSection: React.FC<ResumeSectionProps> = ({ onOpenHireModal, o
     <section id="resume" className="relative py-28 px-6 md:px-12 bg-black border-t border-white/5">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <motion.div
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6"
+        >
           <div>
             <div className="flex items-center gap-2 mb-3">
               <span className="w-2 h-2 rounded-full bg-[#FF2A2A]" />
@@ -82,10 +88,16 @@ export const ResumeSection: React.FC<ResumeSectionProps> = ({ onOpenHireModal, o
               <span>Preview PDF</span>
             </button>
           </div>
-        </div>
+        </motion.div>
 
         {/* Profile Card Intro */}
-        <div className="p-8 rounded-2xl bg-neutral-950 border border-white/10 mb-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.65, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="p-8 rounded-2xl bg-neutral-950 border border-white/10 mb-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6"
+        >
           <div>
             <span className="text-xs font-mono text-[#FF2A2A] uppercase tracking-widest block mb-1">
               Candidate Profile
@@ -107,7 +119,7 @@ export const ResumeSection: React.FC<ResumeSectionProps> = ({ onOpenHireModal, o
             <span>Book Interview / Call</span>
             <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </MagneticButton>
-        </div>
+        </motion.div>
 
         {/* Two-Column Resume Architecture */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -122,7 +134,14 @@ export const ResumeSection: React.FC<ResumeSectionProps> = ({ onOpenHireModal, o
 
             <div className="space-y-8 relative pl-6 border-l border-white/10 ml-2">
               {RESUME_EXPERIENCE.map((exp, idx) => (
-                <div key={idx} className="relative">
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.5, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                  className="relative"
+                >
                   {/* Timeline Dot */}
                   <div className="absolute -left-[31px] top-1.5 w-3.5 h-3.5 rounded-full bg-black border-2 border-[#FF2A2A]" />
 
@@ -150,13 +169,19 @@ export const ResumeSection: React.FC<ResumeSectionProps> = ({ onOpenHireModal, o
                       </div>
                     ))}
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
 
           {/* Right: Education, Certifications & Tools (5 cols) */}
-          <div className="lg:col-span-5 space-y-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.65, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-5 space-y-10"
+          >
             {/* Education */}
             <div>
               <div className="flex items-center gap-3 pb-4 border-b border-white/10 mb-6">
@@ -231,7 +256,7 @@ export const ResumeSection: React.FC<ResumeSectionProps> = ({ onOpenHireModal, o
                 ))}
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
 

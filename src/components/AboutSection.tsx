@@ -31,25 +31,38 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenHireModal, onO
     <section id="about" className="relative py-28 px-6 md:px-12 bg-black border-t border-white/5">
       <div className="max-w-7xl mx-auto">
         {/* Section Header Tag */}
-        <div className="flex items-center gap-2 mb-4">
-          <span className="w-2 h-2 rounded-full bg-[#FF2A2A]" />
-          <span className="text-xs font-mono tracking-widest text-[#FF2A2A] uppercase">
-            Creative Philosophy
-          </span>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <div className="flex items-center gap-2 mb-4">
+            <span className="w-2 h-2 rounded-full bg-[#FF2A2A]" />
+            <span className="text-xs font-mono tracking-widest text-[#FF2A2A] uppercase">
+              Creative Philosophy
+            </span>
+          </div>
 
-        {/* Large Editorial Headline */}
-        <h2 className="text-3xl sm:text-5xl lg:text-6xl font-display font-black tracking-tight text-white uppercase max-w-5xl leading-[1.1] mb-16">
-          "DESIGN ISN'T JUST WHAT I MAKE.{' '}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-neutral-200 via-white to-neutral-400">
-            IT'S HOW I THINK."
-          </span>
-        </h2>
+          {/* Large Editorial Headline */}
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-display font-black tracking-tight text-white uppercase max-w-5xl leading-[1.1] mb-16">
+            "DESIGN ISN'T JUST WHAT I MAKE.{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-neutral-200 via-white to-neutral-400">
+              IT'S HOW I THINK."
+            </span>
+          </h2>
+        </motion.div>
 
         {/* Two-Column Editorial Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Column: Story & Background */}
-          <div className="lg:col-span-7 space-y-6">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-7 space-y-6"
+          >
             <p className="text-lg sm:text-xl text-neutral-200 leading-relaxed font-light">
               I’m <strong className="text-white font-semibold">Tushar</strong>, a multidisciplinary graphic designer and WordPress web designer focused on creating bold visual identities and digital experiences that connect brands with people.
             </p>
@@ -137,10 +150,16 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenHireModal, onO
                 <span>View Credentials</span>
               </button>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Column: Interactive 3D Profile Artifact Card */}
-          <div className="lg:col-span-5 flex justify-center">
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-5 flex justify-center"
+          >
             <div
               className="relative w-full max-w-sm aspect-[4/5] rounded-3xl p-1 bg-gradient-to-b from-white/20 via-white/5 to-transparent transition-transform duration-200 ease-out cursor-pointer"
               style={{
@@ -180,7 +199,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenHireModal, onO
                       alt="Tushar Visuals Official Logo"
                       className="w-full h-full object-contain rounded-xl group-hover:scale-105 transition-transform duration-300"
                     />
-                    <div className="absolute bottom-0 inset-x-0 h-1 bg-[#FF2A2A]" />
+                    <div className="absolute bottom-0 inset-x-1 h-1 bg-[#FF2A2A]" />
                   </div>
 
                   <h3 className="mt-4 font-display font-black text-2xl text-white uppercase tracking-tight">
@@ -204,7 +223,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenHireModal, onO
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

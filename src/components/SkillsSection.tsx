@@ -41,7 +41,13 @@ export const SkillsSection: React.FC = () => {
     <section id="skills" className="relative py-28 px-6 md:px-12 bg-black border-t border-white/5">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <motion.div
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6"
+        >
           <div>
             <div className="flex items-center gap-2 mb-3">
               <span className="w-2 h-2 rounded-full bg-[#FF2A2A]" />
@@ -57,10 +63,16 @@ export const SkillsSection: React.FC = () => {
           <p className="text-sm sm:text-base text-neutral-400 max-w-md font-light">
             A comprehensive mastery spanning vector identity systems, responsive WordPress architecture, and modern digital interfaces.
           </p>
-        </div>
+        </motion.div>
 
         {/* Interactive 3D Skill Constellation Stage */}
-        <div className="mb-16 rounded-3xl bg-neutral-950/90 border border-white/10 overflow-hidden relative shadow-[0_0_50px_rgba(0,0,0,0.8)]">
+        <motion.div
+          initial={{ opacity: 0, y: 40, scale: 0.98 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-16 rounded-3xl bg-neutral-950/90 border border-white/10 overflow-hidden relative shadow-[0_0_50px_rgba(0,0,0,0.8)]"
+        >
           {/* Subtle top red laser accent line */}
           <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#FF2A2A] to-transparent" />
 
@@ -135,15 +147,19 @@ export const SkillsSection: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* 3 Domain Cards with Interactive Hover Tilt & Skill Bars */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
           {categories.map((cat, idx) => {
             const IconComponent = cat.icon;
             return (
-              <div
+              <motion.div
                 key={cat.id}
+                initial={{ opacity: 0, y: 35 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.6, delay: idx * 0.12, ease: [0.16, 1, 0.3, 1] }}
                 className="group relative rounded-2xl bg-neutral-950/80 border border-white/10 p-8 transition-all duration-300 hover:border-[#FF2A2A]/50 hover:shadow-[0_0_35px_rgba(255,42,42,0.12)] flex flex-col justify-between"
                 data-cursor="EXP"
               >
@@ -194,13 +210,19 @@ export const SkillsSection: React.FC = () => {
                   <span>DEPLOYMENT: PRODUCTION</span>
                   <span className="text-[#FF2A2A]">100% TAILORED</span>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
 
         {/* Tools Arsenal Grid */}
-        <div className="rounded-2xl bg-neutral-950 border border-white/10 p-8">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          className="rounded-2xl bg-neutral-950 border border-white/10 p-8"
+        >
           <div className="flex items-center gap-2 mb-6">
             <Cpu className="w-4 h-4 text-[#FF2A2A]" />
             <h4 className="text-sm font-mono tracking-widest uppercase text-white">
@@ -222,7 +244,7 @@ export const SkillsSection: React.FC = () => {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

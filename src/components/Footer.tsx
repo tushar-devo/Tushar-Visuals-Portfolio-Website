@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import { ArrowUpRight, ArrowUp, Globe, Instagram, Linkedin, Palette, Share2 } from 'lucide-react';
 import { PageView } from '../types';
 import { MagneticButton } from './MagneticButton';
@@ -38,7 +39,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenHireModal }) =
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Top CTA Row with Magnetic Effect, Animated Underline & Arrow Slide */}
-        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between pb-16 border-b border-white/10 gap-8">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col lg:flex-row items-start lg:items-center justify-between pb-16 border-b border-white/10 gap-8"
+        >
           <div className="group/cta inline-block cursor-pointer" onClick={onOpenHireModal}>
             <span className="text-xs font-mono uppercase tracking-widest text-[#FF2A2A] block mb-2">
               Next-Generation Collaborations
@@ -62,10 +69,16 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenHireModal }) =
             <span>Let's talk</span>
             <ArrowUpRight className="w-4 h-4 transition-transform duration-300 ease-out group-hover:translate-x-1.5 group-hover:-translate-y-1.5" />
           </MagneticButton>
-        </div>
+        </motion.div>
 
         {/* Middle Navigation & Social Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 py-16 border-b border-white/10">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.65, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="grid grid-cols-1 md:grid-cols-12 gap-12 py-16 border-b border-white/10"
+        >
           {/* Brand & Tagline */}
           <div className="md:col-span-6 space-y-4">
             <div className="flex items-center gap-3.5">
@@ -144,14 +157,20 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenHireModal }) =
               })}
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Giant Monolithic Brand Wordmark */}
-        <div className="pt-12 pb-8 overflow-hidden select-none">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="pt-12 pb-8 overflow-hidden select-none"
+        >
           <div className="font-syne font-black text-center text-4xl sm:text-7xl md:text-8xl lg:text-[112px] tracking-tighter text-white/[0.08] hover:text-white/[0.14] transition-colors duration-400 uppercase whitespace-nowrap">
             TUSHAR VISUALS
           </div>
-        </div>
+        </motion.div>
 
         {/* Bottom Copyright & Back to Top with arrow animation */}
         <div className="flex flex-col sm:flex-row items-center justify-between pt-8 border-t border-white/5 gap-4 text-xs font-mono text-neutral-500">

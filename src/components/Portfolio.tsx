@@ -69,10 +69,11 @@ const PortfolioCard: React.FC<PortfolioCardProps> = ({
     <motion.div
       ref={cardRef}
       layout
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 40, scale: 0.97 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, amount: 0.12 }}
       exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.45, delay: index * 0.06 }}
+      transition={{ duration: 0.6, delay: (index % 6) * 0.08, ease: [0.16, 1, 0.3, 1] }}
       className={`${colSpanClass} group relative cursor-pointer`}
       onClick={() => onSelectProject(project)}
       onMouseMove={handleMouseMove}
@@ -214,7 +215,13 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject, onOpenHir
 
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <motion.div
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6"
+        >
           <div>
             <div className="flex items-center gap-2 mb-3">
               <span className="w-2 h-2 rounded-full bg-[#FF2A2A]" />
@@ -230,10 +237,16 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject, onOpenHir
           <p className="text-sm sm:text-base text-neutral-400 max-w-md font-light">
             Curated high-resolution graphic design collateral, print mockups, and high-conversion responsive website designs.
           </p>
-        </div>
+        </motion.div>
 
         {/* Category Filters - Strictly Graphic Design & Website Design */}
-        <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-12 border-b border-white/10 pb-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.55, delay: 0.1 }}
+          className="flex flex-wrap items-center gap-2 sm:gap-3 mb-12 border-b border-white/10 pb-6"
+        >
           {categories.map((cat) => {
             const isActive = activeCategory === cat;
             const count = getCategoryCount(cat);
@@ -265,7 +278,7 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject, onOpenHir
               </button>
             );
           })}
-        </div>
+        </motion.div>
 
         {/* Asymmetric Curated Gallery Grid */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
@@ -293,7 +306,13 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject, onOpenHir
         </div>
 
         {/* Bottom Banner to Hire for a Custom Project */}
-        <div className="mt-16 p-8 rounded-2xl bg-gradient-to-r from-neutral-950 via-neutral-900 to-neutral-950 border border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-16 p-8 rounded-2xl bg-gradient-to-r from-neutral-950 via-neutral-900 to-neutral-950 border border-white/10 flex flex-col md:flex-row items-center justify-between gap-6"
+        >
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-[#FF2A2A]/10 border border-[#FF2A2A]/30 flex items-center justify-center text-[#FF2A2A] flex-shrink-0">
               <Sparkles className="w-6 h-6" />
@@ -318,7 +337,7 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onSelectProject, onOpenHir
             <span>Start a Project</span>
             <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </MagneticButton>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

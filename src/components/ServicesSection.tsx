@@ -19,7 +19,13 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onOpenHireModa
 
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <motion.div
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6"
+        >
           <div>
             <div className="flex items-center gap-2 mb-3">
               <span className="w-2 h-2 rounded-full bg-[#FF2A2A]" />
@@ -35,10 +41,16 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onOpenHireModa
           <p className="text-sm sm:text-base text-neutral-400 max-w-md font-light">
             End-to-end design and web engineering packages tailored to elevate venture-backed founders and forward-thinking brands.
           </p>
-        </div>
+        </motion.div>
 
         {/* Interactive 3D Capability Showcase Stage */}
-        <div className="mb-14 rounded-3xl bg-neutral-950/80 border border-white/10 overflow-hidden relative shadow-[0_0_40px_rgba(0,0,0,0.8)]">
+        <motion.div
+          initial={{ opacity: 0, y: 40, scale: 0.98 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-14 rounded-3xl bg-neutral-950/80 border border-white/10 overflow-hidden relative shadow-[0_0_40px_rgba(0,0,0,0.8)]"
+        >
           <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#FF2A2A] to-transparent" />
 
           <div className="grid grid-cols-1 lg:grid-cols-12 items-center">
@@ -105,16 +117,20 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onOpenHireModa
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Services List / Accordion-style Interactive Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {SERVICES.map((service) => {
+          {SERVICES.map((service, idx) => {
             const isSelected = activeServiceId === service.id;
 
             return (
-              <div
+              <motion.div
                 key={service.id}
+                initial={{ opacity: 0, y: 35 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
+                transition={{ duration: 0.55, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
                 onClick={() => setActiveServiceId(service.id)}
                 className={`group relative rounded-2xl p-8 transition-all duration-350 ease-out flex flex-col justify-between cursor-pointer border overflow-hidden transform hover:-translate-y-2 ${
                   isSelected
@@ -187,7 +203,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onOpenHireModa
                     <ArrowUpRight className="w-4 h-4 text-[#FF2A2A] group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform duration-300 ease-out" />
                   </button>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>

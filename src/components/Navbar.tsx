@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, ArrowUpRight, ArrowRight } from 'lucide-react';
+import { Menu, X, ArrowUpRight, ArrowRight, RotateCcw } from 'lucide-react';
 import { PageView } from '../types';
 import { MagneticButton } from './MagneticButton';
 import logoImg from '../images/logo.jpg';
@@ -9,12 +9,16 @@ interface NavbarProps {
   activePage: PageView;
   onNavigate: (page: PageView, sectionId?: string) => void;
   onOpenHireModal: () => void;
+  isLoaded?: boolean;
+  onReload?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
   activePage,
   onNavigate,
-  onOpenHireModal
+  onOpenHireModal,
+  isLoaded = true,
+  onReload,
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -44,7 +48,10 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <>
-      <header
+      <motion.header
+        initial={{ y: -70, opacity: 0 }}
+        animate={isLoaded ? { y: 0, opacity: 1 } : { y: -70, opacity: 0 }}
+        transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           isScrolled
             ? 'py-3 bg-black/80 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.8)]'
@@ -113,8 +120,21 @@ export const Navbar: React.FC<NavbarProps> = ({
             })}
           </nav>
 
-          {/* Right Action: Hire Me CTA Button with Magnetic Movement & Arrow Slide */}
-          <div className="flex items-center gap-4">
+          {/* Right Action: Replay Button + Hire Me CTA Button */}
+          <div className="flex items-center gap-3 sm:gap-4">
+            {onReload && (
+              <button
+                type="button"
+                onClick={onReload}
+                className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#FF2A2A]/40 text-neutral-400 hover:text-white text-[11px] font-mono tracking-wider transition-all duration-300 cursor-pointer"
+                title="Replay Full Reload Animation"
+                data-cursor="RELOAD"
+              >
+                <RotateCcw className="w-3.5 h-3.5 text-[#FF2A2A]" />
+                <span className="hidden xl:inline">RELOAD ANIM</span>
+              </button>
+            )}
+
             <MagneticButton
               id="nav-hire-me-btn"
               onClick={onOpenHireModal}
@@ -148,7 +168,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           </div>
         </div>
-      </header>
+      </motion.header>
 
       {/* Mobile Drawer Menu */}
       <AnimatePresence>

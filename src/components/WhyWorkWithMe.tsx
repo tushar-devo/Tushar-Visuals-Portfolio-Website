@@ -27,7 +27,13 @@ export const WhyWorkWithMe: React.FC<WhyProps> = ({ onOpenHireModal }) => {
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <motion.div
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6"
+        >
           <div>
             <div className="flex items-center gap-2 mb-3">
               <span className="w-2 h-2 rounded-full bg-[#FF2A2A]" />
@@ -43,7 +49,7 @@ export const WhyWorkWithMe: React.FC<WhyProps> = ({ onOpenHireModal }) => {
           <p className="text-sm sm:text-base text-neutral-400 max-w-md font-light">
             Why high-growth founders and creative directors choose Tushar Visuals over generic agencies and templated freelancers.
           </p>
-        </div>
+        </motion.div>
 
         {/* 6 Interactive Benefit Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -51,8 +57,12 @@ export const WhyWorkWithMe: React.FC<WhyProps> = ({ onOpenHireModal }) => {
             const Icon = iconMap[item.icon] || Eye;
 
             return (
-              <div
+              <motion.div
                 key={item.title}
+                initial={{ opacity: 0, y: 35 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.55, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
                 className="group relative p-8 rounded-2xl bg-neutral-950/70 border border-white/10 hover:border-[#FF2A2A]/40 transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,42,42,0.1)] flex flex-col justify-between"
                 data-cursor="VALUE"
               >
@@ -79,13 +89,19 @@ export const WhyWorkWithMe: React.FC<WhyProps> = ({ onOpenHireModal }) => {
                   <span>GUARANTEED QUALITY</span>
                   <span className="text-white group-hover:text-[#FF2A2A] transition-colors">→</span>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
 
         {/* Reassurance Banner */}
-        <div className="mt-12 p-6 rounded-2xl bg-white/[0.02] border border-white/5 text-center flex flex-col sm:flex-row items-center justify-center gap-4 text-xs font-mono text-neutral-400">
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mt-12 p-6 rounded-2xl bg-white/[0.02] border border-white/5 text-center flex flex-col sm:flex-row items-center justify-center gap-4 text-xs font-mono text-neutral-400"
+        >
           <span className="text-[#FF2A2A] font-bold">COMMITMENT //</span>
           <span>Clear communication. Custom design. No cookie-cutter solutions.</span>
           <button
@@ -94,7 +110,7 @@ export const WhyWorkWithMe: React.FC<WhyProps> = ({ onOpenHireModal }) => {
           >
             Start a Conversation →
           </button>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
